@@ -1,14 +1,16 @@
-import React, {useState, useEffect} from 'react';
-import './App.css';
-import {Header} from "./components/Header";
-import {Search} from "./components/Search";
+import React, {useEffect} from 'react';
+import {useDispatch, useSelector} from "react-redux";
 import {makeStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import {MovieCard} from "./components/MovieCard";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 
-const MOVIE_API_URL = "https://www.omdbapi.com/?s=man&apikey=e2141e16";
+import {searchMovies} from "./store/actions/movieActions";
+import {Header} from "./components/Header";
+import {Search} from "./components/Search";
+import {MovieCard} from "./components/MovieCard";
+
+import './App.css';
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -22,36 +24,21 @@ const useStyles = makeStyles(() => ({
 
 const App = () => {
     const classes = useStyles();
-    const [loading, setLoading] = useState(true);
-    const [movies, setMovies] = useState([]);
-    const [errorMessage, setErrorMessage] = useState(null);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        fetch(MOVIE_API_URL)
-            .then(response => response.json())
-            .then(jsonResponse => {
-                setMovies(jsonResponse.Search);
-                setLoading(false);
-            });
-    }, []);
+        dispatch(searchMovies('man'))
+    }, [dispatch]);
+
+    const movies = useSelector(state => state.movie.movies);
+    const loading = useSelector(state => state.movie.loading);
+    const error = useSelector(state => state.movie.error);
 
     const search = searchValue => {
-        setLoading(true);
-        setErrorMessage(null);
-
-        fetch(`https://www.omdbapi.com/?s=${searchValue}&apikey=e2141e16`)
-            .then(response => response.json())
-            .then(jsonResponse => {
-                if (jsonResponse.Response === "True") {
-                    setMovies(jsonResponse.Search);
-                    setLoading(false);
-                } else {
-                    setErrorMessage(jsonResponse.Error);
-                    setLoading(false);
-                }
-            });
+        dispatch(searchMovies(searchValue))
     };
 
+    console.log(error);
     return (
         <div className={classes.root}>
             <Header title={'My movies'}/>
@@ -59,13 +46,13 @@ const App = () => {
             <Typography className={classes.subtitle} variant="h6">Sharing a few of our favourite movies</Typography>
             <Container maxWidth="lg">
                 <Grid container spacing={3}>
-                    {loading && !errorMessage ? (
+                    {loading && !error ? (
                         <span>loading...</span>
-                    ) : errorMessage ? (
-                        <div className="errorMessage">{errorMessage}</div>
+                    ) : error ? (
+                        <div>{error}</div>
                     ) : (
                         movies.map((movie, index) => (
-                            <Grid item xs={12} sm={4} key={`${index}-${movie.strDrink}`}>
+                            <Grid item xs={12} sm={4} key={`${index}-${movie.Title}`}>
                                 <MovieCard movie={movie}/>
                             </Grid>
                         ))

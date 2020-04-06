@@ -1,14 +1,13 @@
 import React from 'react';
 import {makeStyles, createStyles} from '@material-ui/core/styles';
-
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
-
-import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import {red} from '@material-ui/core/colors';
+
+import {DEFAULT_PLACEHOLDER_IMAGE} from "../constants";
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -26,9 +25,6 @@ const useStyles = makeStyles(() =>
         },
     }),
 );
-const DEFAULT_PLACEHOLDER_IMAGE =
-    "https://i.pinimg.com/originals/3e/d2/ae/3ed2ae5ad26767a8fe0063a0485d5ab5.jpg";
-
 
 export const MovieCard = ({movie}) => {
     const poster =
@@ -38,11 +34,6 @@ export const MovieCard = ({movie}) => {
     return (
         <Card className={classes.root}>
             <CardHeader
-                avatar={
-                    <Avatar aria-label="recipe" className={classes.avatar}>
-                        M
-                    </Avatar>
-                }
                 title={movie.Title}
                 subheader={movie.Year}
             />
