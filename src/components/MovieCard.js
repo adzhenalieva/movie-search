@@ -27,8 +27,7 @@ const useStyles = makeStyles(() =>
 );
 
 export const MovieCard = ({movie}) => {
-    const poster =
-        movie.Poster === "N/A" ? DEFAULT_PLACEHOLDER_IMAGE : movie.Poster;
+    const poster = movie.Poster === "N/A" ? DEFAULT_PLACEHOLDER_IMAGE : movie.Poster;
     const classes = useStyles();
 
     return (

@@ -3,6 +3,7 @@ import TextField from "@material-ui/core/TextField";
 import SearchIcon from '@material-ui/icons/Search';
 import {makeStyles} from '@material-ui/core/styles';
 import Button from "@material-ui/core/Button";
+import FormControl from "@material-ui/core/FormControl";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -11,6 +12,9 @@ const useStyles = makeStyles((theme) => ({
     },
     margin: {
         margin: 50
+    },
+    form: {
+        flexDirection: 'row'
     }
 }));
 
@@ -34,13 +38,13 @@ export const Search = (props) => {
 
     return (
         <div className={classes.margin}>
-            <form className="search">
+            <FormControl className={classes.form}>
                 <TextField onChange={handleSearchInputChanges}
                            value={searchValue}
                            label="Movie title"
                            type="search"
                            variant="standard"
-                           size="small"/>
+                           size="medium"/>
                 <Button
                     variant="contained"
                     color="default"
@@ -48,7 +52,7 @@ export const Search = (props) => {
                     startIcon={<SearchIcon/>}
                     onClick={callSearchFunction} type="submit"
                 >search</Button>
-            </form>
+            </FormControl>
         </div>
     );
 };
